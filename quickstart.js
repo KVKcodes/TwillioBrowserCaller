@@ -6,8 +6,7 @@
   var volumeIndicators = document.getElementById('volume-indicators');
 
   log('Requesting Capability Token...');
-  $.getJSON('https://paste-url-here/capability-token')
-  //Paste URL HERE
+  $.getJSON('/capability-token')
     .done(function (data) {
       log('Got a token.');
       console.log('Token: ' + data.token);
