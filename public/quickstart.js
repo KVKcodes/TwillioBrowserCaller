@@ -6,7 +6,7 @@
   var volumeIndicators = document.getElementById('volume-indicators');
 
   log('Requesting Capability Token...');
-  $.getJSON('/capability-token')
+  $.getJSON('https://blue-moose-5691.twil.io/capability-token')
     .done(function (data) {
       log('Got a token.');
       console.log('Token: ' + data.token);
