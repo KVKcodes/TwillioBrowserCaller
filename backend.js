@@ -12,29 +12,15 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-const accountSid = process.env.accountSid; 
-const authToken = process.env.authToken;   
-const client = new twilio(accountSid, authToken);
-
-app.get('/capability-token', (req, res) => {
-  const capability = new twilio.jwt.ClientCapability({
-    accountSid: accountSid,
-    authToken: authToken,
-  });
-
-  capability.addScope(
-    new twilio.jwt.ClientCapability.OutgoingClientScope({
-      applicationSid: process.env.app_id,
-    })
-  );
-
-  const token = capability.toJwt();
-  res.send({ token: token, identity: 'client-name' });
-});
-
 app.post('/call', (req, res) => {
+  const { To } = req.body;
+  
+  if (!To) {
+    return res.status(400).send('To parameter is required');
+  }
+  
   const response = new twilio.twiml.VoiceResponse();
-  response.dial({ callerId: process.env.twillio_phoneno }, req.body.To);
+  response.dial({ callerId: process.env.twillio_phoneno }, To);
   res.type('text/xml');
   res.send(response.toString());
 });

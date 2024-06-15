@@ -11,7 +11,6 @@
       log('Got a token.');
       console.log('Token: ' + data.token);
 
-      // Setup Twilio.Device
       Twilio.Device.setup(data.token);
 
       Twilio.Device.ready(function (device) {
@@ -46,7 +45,6 @@
           conn.reject();
           log('It\'s your nemesis. Rejected call.');
         } else {
-          // accept the incoming connection and start two-way audio
           conn.accept();
         }
       });
@@ -55,7 +53,6 @@
 
       Twilio.Device.audio.on('deviceChange', updateAllDevices);
 
-      // Show audio selection UI if it is supported by the browser.
       if (Twilio.Device.audio.isSelectionSupported) {
         document.getElementById('output-selection').style.display = 'block';
       }
@@ -64,9 +61,7 @@
       log('Could not get a token from server!');
     });
 
-  // Bind button to make call
   document.getElementById('button-call').onclick = function () {
-    // get the phone number to connect the call to
     var params = {
       To: document.getElementById('phone-number').value
     };
@@ -75,7 +70,6 @@
     Twilio.Device.connect(params);
   };
 
-  // Bind button to hangup call
   document.getElementById('button-hangup').onclick = function () {
     log('Hanging up...');
     Twilio.Device.disconnectAll();
@@ -132,7 +126,6 @@
   }
 });
 
-// Update the available ringtone and speaker devices
 function updateDevices(selectEl, selectedDevices) {
   selectEl.innerHTML = '';
   Twilio.Device.audio.availableOutputDevices.forEach(function(device, id) {
@@ -151,14 +144,12 @@ function updateDevices(selectEl, selectedDevices) {
   });
 }
 
-// Activity log
 function log(message) {
   var logDiv = document.getElementById('log');
   logDiv.innerHTML += '<p>&gt;&nbsp;' + message + '</p>';
   logDiv.scrollTop = logDiv.scrollHeight;
 }
 
-// Set the client name in the UI
 function setClientNameUI(clientName) {
   var div = document.getElementById('client-name');
   div.innerHTML = 'Your client name: <strong>' + clientName +
